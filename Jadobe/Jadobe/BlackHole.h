@@ -2,8 +2,9 @@
 
 #include <Windows.h>
 #include <string>
+#include "AntiFileViewer.h"
 
-class BlackHole
+class BlackHole : public AntiFileViewer
 {
 private:
 	std::wstring path;

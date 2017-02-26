@@ -2,6 +2,7 @@
 #include "ISysInternals.h"
 
 int64_t ISysInternals::targetProcAddr;
+std::wstring ISysInternals::fileName = L"";
 
 bool ISysInternals::CheckPrivilege(std::wstring privilege)
 {
@@ -15,7 +16,6 @@ bool ISysInternals::CheckPrivilege(std::wstring privilege)
 			CloseHandle(hToken);
 		return false;
 	}
-
 	
 	if (!LookupPrivilegeValue(NULL, privilege.c_str(), &luid))
 	{

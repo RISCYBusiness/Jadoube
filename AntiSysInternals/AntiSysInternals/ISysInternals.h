@@ -18,17 +18,17 @@ typedef struct Permissions {
 class ISysInternals
 {	
 protected:
-	static std::wstring fileName;
+	static std::wstring ISysInternals::fileName;
 	Permissions *processRights;
 	bool CheckPrivilege(std::wstring privilege);
 	bool isAdmin();
 public:
-	static int64_t targetProcAddr;
+	static int64_t ISysInternals::targetProcAddr;
 	bool RegisterHook(void* hook, std::wstring libName, std::string procName);
 	virtual void DoActions()=0;
 	Permissions *GetPermissions();
 	virtual void Patch(void* hook, void* jmpAddr);
-	virtual void CrashTarget(); //attempts to crash target sysinternal program already running after our first launch - forcing a dll load upon tool restart.
+	virtual void CrashTarget() { return; } //attempts to crash target sysinternal program already running after our first launch - forcing a dll load upon tool restart.
 	ISysInternals();
 	~ISysInternals();
 };

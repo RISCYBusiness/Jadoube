@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include <Windows.h>
 #include <Shlwapi.h>
+#include "Debug.h"
 #include "SysInternalHook.h"
 #include "StringEncrypt.h"
-#include "Debug.h"
 
-//
+
 // Write dll path to SysInternal DbgHelp Key
 bool SysInternalHook::WriteHook(std::wstring toolName)
 {
